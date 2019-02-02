@@ -43,7 +43,11 @@ https://www.devopsschool.com/blog/lifecycle-of-docker-containers/
 ```
 Ctrl+pq
 ```
-
+## diferrence betwen dcker attch and docker exec
+```
+Note: This command (attach) is not for running a new process in a container. See: docker exec.
+ex : https://askubuntu.com/questions/505506/how-to-get-bash-or-ssh-into-a-running-container-in-background-mode/507009#507009
+```
 ### Notes 
 ```
 https://www.devopsschool.com/notes/docker/2019/classroom-jan-public-2019.txt
