@@ -39,7 +39,10 @@ https://www.devopsschool.com/blog/lifecycle-of-docker-containers/
    ```
    https://www.devopsschool.com/tutorial/docker/commands/index.html
    ```
-
+## exit from containe
+```
+Ctrl+pq
+```
 
 ### Notes 
 ```
