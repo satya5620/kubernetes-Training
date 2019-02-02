@@ -39,3 +39,10 @@ https://www.devopsschool.com/blog/lifecycle-of-docker-containers/
    ```
    https://www.devopsschool.com/tutorial/docker/commands/index.html
    ```
+
+
+### Notes 
+```
+https://www.devopsschool.com/notes/docker/2019/classroom-jan-public-2019.txt
+
+```
