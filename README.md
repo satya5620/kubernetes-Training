@@ -30,6 +30,11 @@ https://www.devopsschool.com/blog/lifecycle-of-docker-containers/
    ```
    docker inspect <container-id> | grep -i ip
    ```
+   #Rename the contaibner name
+   ```
+   Ex : docker rename <container-id> <conmtainer-new-name>
+   Ex: docker rename fef7316f5ca1 Satya
+   ```
    # docker all comands uasage 
    ```
    https://www.devopsschool.com/tutorial/docker/commands/index.html
