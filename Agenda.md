@@ -7,3 +7,6 @@ Trainer Profile: https://bit.ly/2QKryZt
 ```
 https://www.devopsschool.com/quiz/index.php/quiz
 ```
+```
+https://www.devopsschool.com/lms/?redirect=0
+```
