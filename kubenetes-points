@@ -6,37 +6,6 @@ https://www.devopsschool.com/tutorial/kubernetes/
 ```
 ## foloow the instuctioon for minicube cluster installation syteps
 ```
-centos1 -- 192.168.0.48
-user1/user
-
-centos2 -- 192.168.0.47
-user2/user
-
-
-
-ip 13.233.107.212
-
-
-https://www.devopsschool.com/notes/docker/2019/classroom-jan-public-2019.txt
-
-
-
-https://www.devopsschool.com/notes/docker/2019/online-jan-2019.txt
-
-
-https://www.devopsschool.com/notes/docker/2019/
-
-
-
-
-
-
-
-13.233.74.205 - master - 172.31.24.67
-
-13.233.153.243 - worker - 172.31.14.111
-
-
 IN Master :
 should follow the belkow step1 to step5
 
@@ -101,4 +70,12 @@ as root:
 
 step 6 : after excute step:5 then provide token and that token to use in worker node due to cluster manage worker node-level.
 kubeadm join 172.31.20.25:6443 --token zkdqsh.sexzkgl8xcfeuovy --discovery-token-ca-cert-hash sha256:8db3256f43ca3fc688b366a0e54a1f35e6f392e8922691664cf0c7c213f3a122
+```
+```
+https://www.devopsschool.com/notes/docker/2019/classroom-jan-public-2019.txt
+
+https://www.devopsschool.com/notes/docker/2019/online-jan-2019.txt
+
+https://www.devopsschool.com/notes/docker/2019/
+
 ```
