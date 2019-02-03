@@ -1,0 +1,433 @@
+```
+Setting up a Clustors using Kubeadm
+	Each node(master+worker)you should have what?
+	1.Kubelet
+	2. Kubeadm
+	4. CNI
+		Kube Proxy
+	5. Container Enginer 
+
+Rajesh Master
+13.233.104.254
+
+Rajesh worker
+13.232.57.5
+
+UBUNTU  - https://www.devopsschool.com/tutorial/kubernetes/kubeadm-installing-kubernetes-clustors-ubuntu.html
+
+
+Docker Engine
+https://www.devopsschool.com/tutorial/docker/install-config/docker-install-commuityedition-centos-rhel.html
+
+Installing kubeadm, kubelet and kubectl
+---------------------------------------------
+cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+exclude=kube*
+EOF
+
+# Set SELinux in permissive mode (effectively disabling it)
+setenforce 0
+sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+
+yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+----------------------
+Running transaction
+  Installing : ebtables-2.0.10-16.el7.x86_64                               1/11
+  Installing : socat-1.7.3.2-2.el7.x86_64                                  2/11
+  Installing : libnetfilter_cthelper-1.0.0-9.el7.x86_64                    3/11
+  Installing : cri-tools-1.12.0-0.x86_64                                   4/11
+  Installing : libnetfilter_queue-1.0.2-2.el7_2.x86_64                     5/11
+  Installing : libnetfilter_cttimeout-1.0.0-6.el7.x86_64                   6/11
+  Installing : conntrack-tools-1.4.4-4.el7.x86_64                          7/11
+  Installing : kubernetes-cni-0.6.0-0.x86_64                               8/11
+  Installing : kubelet-1.13.3-0.x86_64                                     9/11
+  Installing : kubectl-1.13.3-0.x86_64                                    10/11
+  Installing : kubeadm-1.13.3-0.x86_64 
+    
+systemctl enable --now kubelet
+
+$ kubeadm init
+
+========================================================================================
+
+[root@ip-172-31-20-25 ec2-user]# kubeadm init
+[init] Using Kubernetes version: v1.13.3
+[preflight] Running pre-flight checks
+        [WARNING SystemVerification]: this Docker version is not on the list of validated versions: 18.09.1. Latest validated version: 18.06
+        [WARNING Service-Kubelet]: kubelet service is not enabled, please run 'systemctl enable kubelet.service'
+[preflight] Pulling images required for setting up a Kubernetes cluster
+[preflight] This might take a minute or two, depending on the speed of your internet connection
+[preflight] You can also perform this action in beforehand using 'kubeadm config images pull'
+[kubelet-start] Writing kubelet environment file with flags to file "/var/lib/kubelet/kubeadm-flags.env"
+[kubelet-start] Writing kubelet configuration to file "/var/lib/kubelet/config.yaml"
+[kubelet-start] Activating the kubelet service
+[certs] Using certificateDir folder "/etc/kubernetes/pki"
+[certs] Generating "etcd/ca" certificate and key
+[certs] Generating "etcd/healthcheck-client" certificate and key
+[certs] Generating "apiserver-etcd-client" certificate and key
+[certs] Generating "etcd/server" certificate and key
+[certs] etcd/server serving cert is signed for DNS names [ip-172-31-20-25.ap-south-1.compute.internal localhost] and IPs [172.31.20.25 127.0.0.1 ::1]
+[certs] Generating "etcd/peer" certificate and key
+[certs] etcd/peer serving cert is signed for DNS names [ip-172-31-20-25.ap-south-1.compute.internal localhost] and IPs [172.31.20.25 127.0.0.1 ::1]
+[certs] Generating "ca" certificate and key
+[certs] Generating "apiserver" certificate and key
+[certs] apiserver serving cert is signed for DNS names [ip-172-31-20-25.ap-south-1.compute.internal kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local] and IPs [10.96.0.1 172.31.20.25]
+[certs] Generating "apiserver-kubelet-client" certificate and key
+[certs] Generating "front-proxy-ca" certificate and key
+[certs] Generating "front-proxy-client" certificate and key
+[certs] Generating "sa" key and public key
+[kubeconfig] Using kubeconfig folder "/etc/kubernetes"
+[kubeconfig] Writing "admin.conf" kubeconfig file
+[kubeconfig] Writing "kubelet.conf" kubeconfig file
+[kubeconfig] Writing "controller-manager.conf" kubeconfig file
+[kubeconfig] Writing "scheduler.conf" kubeconfig file
+[control-plane] Using manifest folder "/etc/kubernetes/manifests"
+[control-plane] Creating static Pod manifest for "kube-apiserver"
+[control-plane] Creating static Pod manifest for "kube-controller-manager"
+[control-plane] Creating static Pod manifest for "kube-scheduler"
+[etcd] Creating static Pod manifest for local etcd in "/etc/kubernetes/manifests"
+[wait-control-plane] Waiting for the kubelet to boot up the control plane as static Pods from directory "/etc/kubernetes/manifests". This can take up to 4m0s
+[apiclient] All control plane components are healthy after 19.503036 seconds
+[uploadconfig] storing the configuration used in ConfigMap "kubeadm-config" in the "kube-system" Namespace
+[kubelet] Creating a ConfigMap "kubelet-config-1.13" in namespace kube-system with the configuration for the kubelets in the cluster
+[patchnode] Uploading the CRI Socket information "/var/run/dockershim.sock" to the Node API object "ip-172-31-20-25.ap-south-1.compute.internal" as an annotation
+[mark-control-plane] Marking the node ip-172-31-20-25.ap-south-1.compute.internal as control-plane by adding the label "node-role.kubernetes.io/master=''"
+[mark-control-plane] Marking the node ip-172-31-20-25.ap-south-1.compute.internal as control-plane by adding the taints [node-role.kubernetes.io/master:NoSchedule]
+[bootstrap-token] Using token: zkdqsh.sexzkgl8xcfeuovy
+[bootstrap-token] Configuring bootstrap tokens, cluster-info ConfigMap, RBAC Roles
+[bootstraptoken] configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
+[bootstraptoken] configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
+[bootstraptoken] configured RBAC rules to allow certificate rotation for all node client certificates in the cluster
+[bootstraptoken] creating the "cluster-info" ConfigMap in the "kube-public" namespace
+[addons] Applied essential addon: CoreDNS
+[addons] Applied essential addon: kube-proxy
+
+Your Kubernetes master has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+You can now join any number of machines by running the following on each node
+as root:
+
+  kubeadm join 172.31.20.25:6443 --token zkdqsh.sexzkgl8xcfeuovy --discovery-token-ca-cert-hash sha256:8db3256f43ca3fc688b366a0e54a1f35e6f392e8922691664cf0c7c213f3a122
+
+[root@ip-172-31-20-25 ec2-user]# yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+Loaded plugins: amazon-id, rhui-lb, search-disabled-repos
+Package kubelet-1.13.3-0.x86_64 already installed and latest version
+Package kubeadm-1.13.3-0.x86_64 already installed and latest version
+Package kubectl-1.13.3-0.x86_64 already installed and latest version
+Nothing to do
+[root@ip-172-31-20-25 ec2-user]# systemctl enable --now kubelet
+Created symlink from /etc/systemd/system/multi-user.target.wants/kubelet.service to /etc/systemd/system/kubelet.service.
+
+
+====================================================
+
+MASTER
+1 13.233.114.178
+2 13.233.74.205
+3 13.233.190.145
+4 35.154.248.74
+5 13.232.22.91
+6 13.233.18.220
+7 13.233.83.120
+8 13.232.146.221
+9 13.127.159.186
+
+WORKER
+
+1 13.232.145.99
+2 13.233.153.243
+3 13.233.58.130
+4 13.232.208.208
+5 13.233.155.102
+6 13.233.144.13
+7 13.233.255.153
+8 35.154.244.136
+9 52.66.246.134
+
+=========WORK STATION=====================
+    1  sudo -s
+    2  mkdir -p $HOME/.kube
+    3  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+    4  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+    5  more $HOME/.kube/config
+    6  q!
+    7  clear
+    8  kubectl
+    9  kubectl version
+   10  kubectl cluster-info
+   11  kubectl get pods
+   12  kubectl get rc
+   13  kubectl get svc
+   14  kubectl get deploy
+   15  kubectl get pods
+   16  kubectl get ns
+   17  kubectl get pods --all-namespaces
+   18  kubectl get pods -n=kube-system
+   19  kubectl get pods -n=kube-system -o wide
+   20  kubectl describe etcd-ip-172-31-20-25.ap-south-1.compute.internal
+   21  kubectl describe pod etcd-ip-172-31-20-25.ap-south-1.compute.internal
+   22  kubectl describe pod etcd-ip-172-31-20-25.ap-south-1.compute.internal -n=kube-system
+   23  clear
+   24  ls
+   25  kubectl get ns
+   26  kubectl get nodes
+   27  kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+   28  kubectl get pods -n=kube-system -o wide
+   29  kubectl get nodes
+   30  clear
+   31  kubectl get node
+   32  historu
+   33  history
+
+[ec2-user@ip-172-31-20-25 por]$ kubectl
+kubectl controls the Kubernetes cluster manager.
+
+Find more information at: https://kubernetes.io/docs/reference/kubectl/overview/
+
+Basic Commands (Beginner):
+  create         Create a resource from a file or from stdin.
+  expose         Take a replication controller, service, deployment or pod and expose it as a new
+Kubernetes Service
+  run            Run a particular image on the cluster
+  set            Set specific features on objects
+
+Basic Commands (Intermediate):
+  explain        Documentation of resources
+  get            Display one or many resources
+  edit           Edit a resource on the server
+  delete         Delete resources by filenames, stdin, resources and names, or by resources and
+label selector
+
+Deploy Commands:
+  rollout        Manage the rollout of a resource
+  scale          Set a new size for a Deployment, ReplicaSet, Replication Controller, or Job
+  autoscale      Auto-scale a Deployment, ReplicaSet, or ReplicationController
+
+Cluster Management Commands:
+  certificate    Modify certificate resources.
+  cluster-info   Display cluster info
+  top            Display Resource (CPU/Memory/Storage) usage.
+  cordon         Mark node as unschedulable
+  uncordon       Mark node as schedulable
+  drain          Drain node in preparation for maintenance
+  taint          Update the taints on one or more nodes
+
+Troubleshooting and Debugging Commands:
+  describe       Show details of a specific resource or group of resources
+  logs           Print the logs for a container in a pod
+  attach         Attach to a running container
+  exec           Execute a command in a container
+  port-forward   Forward one or more local ports to a pod
+  proxy          Run a proxy to the Kubernetes API server
+  cp             Copy files and directories to and from containers.
+  auth           Inspect authorization
+
+Advanced Commands:
+  diff           Diff live version against would-be applied version
+  apply          Apply a configuration to a resource by filename or stdin
+  patch          Update field(s) of a resource using strategic merge patch
+  replace        Replace a resource by filename or stdin
+  wait           Experimental: Wait for a specific condition on one or many resources.
+  convert        Convert config files between different API versions
+
+Settings Commands:
+  label          Update the labels on a resource
+  annotate       Update the annotations on a resource
+  completion     Output shell completion code for the specified shell (bash or zsh)
+
+Other Commands:
+  api-resources  Print the supported API resources on the server
+  api-versions   Print the supported API versions on the server, in the form of "group/version"
+  config         Modify kubeconfig files
+  plugin         Provides utilities for interacting with plugins.
+  version        Print the client and server version information
+
+Usage:
+  kubectl [flags] [options]
+
+
+
+=====================
+pod.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-pod
+spec:
+  containers:
+  - name: hello-ctr
+    image: nginx
+    ports:
+    - containerPort: 80
+    labels:
+    - app: hello-world
+
+rc.yaml
+
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: hello-rc
+spec:
+  replicas: 5
+  selector:
+    app: hello-world
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+      - name: hello-ctr
+        image: nginx
+        ports:
+        - containerPort: 80
+
+
+dep.yaml
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hello-deploy
+spec:
+  replicas: 4
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+      - name: hello-pod
+        image: nginx
+        ports:
+        - containerPort: 80
+
+ 1  sudo -s
+    2  kubectl get nodes
+    3  clear
+    4  ls
+    5  mkdir por
+    6  cd por/
+    7  ls
+    8  vi pod.yaml
+    9  kubectl create pod.yaml
+   10  kubectl create -f pod.yaml
+   11  vi pod.yaml
+   12  kubectl create -f pod.yaml
+   13  kubectl get pods
+   14  kubectl get pods -o wide
+   15  kubectl describe hello-pod
+   16  kubectl describe pod hello-pod
+   17  ls
+   18  kubectl get pods
+   19  curl http://10.44.0.1
+   20  clear
+   21  ls
+   22  kubectl get pods
+   23  kubectl exec -it hello-pod /bin/bash
+   24  kubectl get pods
+   25  kubectl attach hello-pod
+   26  kubectl get pods
+   27  kubectl
+   28  clear
+   29  kubectl get pods
+   30  kubectl delete -f pod.yaml
+   31  kubectl create -f pod.yaml
+   32  kubectl delete pod hello-pod
+   33  kubectl create -f pod.yaml
+   34  kubectl logs pod hello-pod
+   35  kubectl logs hello-pod
+   36  clear
+   37  kubectl
+   38  clear
+   39  ls
+   40  vi rc.yaml
+   41  kubectl get pods
+   42  kubectl create -f rc.yaml
+   43  kubectl get pods
+   44  kubectl delete pod hello-rc-lwmns
+   45  kubectl get pods
+   46  vi rc.yaml
+   47  kubectl apply rc.yaml
+   48  kubectl apply -f rc.yaml
+   49  kubectl get pods
+   50  kubectl edit rc hello-rc
+   51  kubectl get pods
+   52  clear
+   53  lls
+   54  cler
+   55  clear
+   56  kubectl
+   57  kubectl help create
+   58  kubectl help
+   59  kubectl help run
+   60  clear
+   61  kubectl help create
+   62  kubectl help run
+   63  clear
+   64* kubectl run nginx --image=ng
+   65  kubectl get deploy
+   66  kubectl get pod
+   67  kubectl delete pod nginx-7cdbd8cdc9-ll4j6
+   68  kubectl get pod
+   69  clear
+   70  ls
+   71  kubectl get pod
+   72  kubectl delete pod hello-pod
+   73  kubectl delete rc hello-rc
+   74  kubectl delete deploy nginx
+   75  kubectl get pod
+   76  clear
+   77  vi deploy.yaml
+   78  kubectl create -f deploy.yaml
+   79  vi deploy.yaml
+   80  kubectl get pod
+   81  kubectl describe pod hello-deploy-6995c8699c-vjqgr
+   82  history
+
+
+  32  kubectl get node
+   33  historu
+   34  history
+   35  sudo -s
+   36  kubectl get pods
+   37  kubectl get deploy
+   38  kubectl get svc
+   39  kubectl expose hello-deploy
+   40  kubectl expose deploy hello-deploy
+   41  kubectl expose hello-deploy
+   42  kubectl get svc
+   43  curl http://10.97.111.40
+   44  kubectl expose hello-deploy --type=NodePort
+   45  kubectl get svc
+   46  kubectl expose hello-deploy --type=NodePort --name=node
+   47  kubectl expose deploy hello-deploy --type=NodePort --name=node
+   48  kubectl get svc
+   49  kubectl get pods
+   50  history
+   ```
